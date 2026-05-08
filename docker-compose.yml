@@ -1,0 +1,22 @@
+# Docker Compose configuration for running Busted
+#
+# Usage:
+#   docker-compose run --rm busted
+#   docker-compose run --rm busted spec/
+#   docker-compose run --rm busted --help
+#
+# This will run Busted on your Lua test suite with default settings
+
+services:
+  busted:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    # Override command to run all tests in spec/ by default
+    command: ["spec"]
+    environment:
+      - TERM=xterm-256color
+    tty: true
+    init: true

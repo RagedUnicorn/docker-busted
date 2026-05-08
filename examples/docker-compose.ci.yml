@@ -1,0 +1,61 @@
+# Docker Compose configuration for CI/CD integration with Busted
+#
+# Usage:
+#   docker-compose -f docker-compose.ci.yml run ci-junit
+#   docker-compose -f docker-compose.ci.yml run ci-tap
+#
+# This will run Busted in CI mode with various output formats
+
+services:
+  # Generate JUnit XML report for CI systems
+  ci-junit:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-ci-junit
+    volumes:
+      - ../:/workspace
+      - ./reports:/reports
+    working_dir: /workspace
+    entrypoint: /bin/sh
+    command: ["-c", "busted --output=junit spec > /reports/busted-junit.xml"]
+
+  # Generate TAP format for test harnesses
+  ci-tap:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-ci-tap
+    volumes:
+      - ../:/workspace
+      - ./reports:/reports
+    working_dir: /workspace
+    entrypoint: /bin/sh
+    command: ["-c", "busted --output=TAP spec > /reports/busted-tap.tap"]
+
+  # Generate JSON report
+  ci-json:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-ci-json
+    volumes:
+      - ../:/workspace
+      - ./reports:/reports
+    working_dir: /workspace
+    entrypoint: /bin/sh
+    command: ["-c", "busted --output=json spec > /reports/busted-report.json"]
+
+  # Plain output for log aggregation
+  ci-plain:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-ci-plain
+    volumes:
+      - ../:/workspace
+      - ./reports:/reports
+    working_dir: /workspace
+    entrypoint: /bin/sh
+    command: ["-c", "busted --output=plainTerminal spec > /reports/busted-report.txt"]
+
+  # Simple CI check with exit code
+  ci-check:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-ci-check
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    command: ["--output=plainTerminal", "spec"]

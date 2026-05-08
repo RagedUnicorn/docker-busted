@@ -1,0 +1,29 @@
+# Docker Compose configuration for development
+#
+# This file is used for building and testing the Busted image locally
+#
+# Usage:
+#   docker-compose -f docker-compose.dev.yml build
+#   docker-compose -f docker-compose.dev.yml run --rm busted-dev
+#
+# This will drop you into a shell where you can manually run busted commands
+
+services:
+  busted-dev:
+    build: .
+    image: ragedunicorn/busted:dev
+    volumes:
+      - ./examples:/workspace
+      - ./test:/test:ro
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    # Override entrypoint to get a shell
+    entrypoint: /bin/sh
+    labels:
+      org.opencontainers.image.title: "Busted on Alpine Linux (Dev)"
+      org.opencontainers.image.description: "Busted development environment for testing and debugging"
+      org.opencontainers.image.vendor: "ragedunicorn"
+    environment:
+      - TERM=xterm-256color
+      - PS1=\[\033[1;36m\]busted-dev\[\033[0m\]:\w\$

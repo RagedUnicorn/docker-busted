@@ -1,0 +1,19 @@
+schemaVersion: 2.0.0
+
+metadataTest:
+  labels:
+    - key: 'org.opencontainers.image.title'
+      value: 'Busted on Alpine Linux'
+    - key: 'org.opencontainers.image.description'
+      value: 'Lightweight Busted Docker image built on Alpine Linux for Lua unit testing'
+    - key: 'org.opencontainers.image.vendor'
+      value: 'ragedunicorn'
+    - key: 'org.opencontainers.image.authors'
+      value: 'Michael Wiesendanger <michael.wiesendanger@gmail.com>'
+    - key: 'org.opencontainers.image.source'
+      value: 'https://github.com/RagedUnicorn/docker-busted'
+    - key: 'org.opencontainers.image.licenses'
+      value: 'MIT'
+  entrypoint: ['busted']
+  cmd: ['--help']
+  workdir: '/workspace'

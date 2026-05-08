@@ -1,0 +1,23 @@
+-- Busted configuration file
+-- See https://lunarmodules.github.io/busted/#usage for available options
+
+return {
+  default = {
+    verbose = true,
+    coverage = false,
+    output = "utfTerminal",
+    ROOT = {"spec"},
+    pattern = "_spec",
+  },
+  ci = {
+    verbose = true,
+    output = "junit",
+    ROOT = {"spec"},
+    pattern = "_spec",
+  },
+  tap = {
+    output = "TAP",
+    ROOT = {"spec"},
+    pattern = "_spec",
+  },
+}

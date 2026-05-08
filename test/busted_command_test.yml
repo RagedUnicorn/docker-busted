@@ -1,0 +1,63 @@
+schemaVersion: 2.0.0
+
+commandTests:
+  - name: 'Test running a simple passing spec'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/spec && printf ''describe("math", function() it("adds", function() assert.are.equal(2, 1+1) end) end)\n'' > /tmp/spec/pass_spec.lua']
+    ]
+    command: 'busted'
+    args: ['--output=plainTerminal', '/tmp/spec/pass_spec.lua']
+    exitCode: 0
+    expectedOutput:
+      - '1 success'
+
+  - name: 'Test detecting a failing assertion'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/spec && printf ''describe("math", function() it("fails", function() assert.are.equal(3, 1+1) end) end)\n'' > /tmp/spec/fail_spec.lua']
+    ]
+    command: 'busted'
+    args: ['--output=plainTerminal', '/tmp/spec/fail_spec.lua']
+    exitCode: 1
+    expectedOutput:
+      - 'Failure'
+
+  - name: 'Test TAP formatter'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/spec && printf ''describe("tap", function() it("works", function() assert.is_true(true) end) end)\n'' > /tmp/spec/tap_spec.lua']
+    ]
+    command: 'busted'
+    args: ['--output=TAP', '/tmp/spec/tap_spec.lua']
+    exitCode: 0
+    expectedOutput:
+      - 'ok 1'
+
+  - name: 'Test JUnit formatter'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/spec && printf ''describe("junit", function() it("works", function() assert.is_true(true) end) end)\n'' > /tmp/spec/junit_spec.lua']
+    ]
+    command: 'busted'
+    args: ['--output=junit', '/tmp/spec/junit_spec.lua']
+    exitCode: 0
+    expectedOutput:
+      - 'testsuite'
+
+  - name: 'Test pending tests are reported'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/spec && printf ''describe("pending", function() pending("not done yet") end)\n'' > /tmp/spec/pending_spec.lua']
+    ]
+    command: 'busted'
+    args: ['--output=plainTerminal', '/tmp/spec/pending_spec.lua']
+    exitCode: 0
+    expectedOutput:
+      - 'pending'
+
+  - name: 'Test multiple spec files'
+    setup: [
+      ['sh', '-c', 'mkdir -p /tmp/multi && printf ''describe("a", function() it("a", function() assert(true) end) end)\n'' > /tmp/multi/a_spec.lua'],
+      ['sh', '-c', 'printf ''describe("b", function() it("b", function() assert(true) end) end)\n'' > /tmp/multi/b_spec.lua']
+    ]
+    command: 'busted'
+    args: ['--output=plainTerminal', '--pattern=_spec', '/tmp/multi']
+    exitCode: 0
+    expectedOutput:
+      - '2 successes'

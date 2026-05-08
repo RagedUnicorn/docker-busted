@@ -1,0 +1,33 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Build artifacts
+*.log
+build/
+dist/
+target/
+
+# Test artifacts
+test-results/
+luacov.report.out
+luacov.stats.out
+
+examples/reports/
+
+# Local environment
+.env.local
+.env.*.local
+
+# Docker
+.docker/

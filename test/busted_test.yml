@@ -1,0 +1,38 @@
+schemaVersion: 2.0.0
+
+fileExistenceTests:
+  - name: 'Busted binary exists'
+    path: '/usr/local/bin/busted'
+    shouldExist: true
+    permissions: '-rwxr-xr-x'
+
+  - name: 'Workspace directory exists'
+    path: '/workspace'
+    shouldExist: true
+    permissions: 'drwxr-xr-x'
+
+commandTests:
+  - name: 'Busted is executable'
+    command: 'busted'
+    args: ['--version']
+    exitCode: 0
+
+  - name: 'Working directory is set correctly'
+    command: 'pwd'
+    exitCode: 0
+    expectedOutput:
+      - '/workspace'
+
+  - name: 'Lua runtime is available'
+    command: 'lua5.3'
+    args: ['-v']
+    exitCode: 0
+    expectedOutput:
+      - 'Lua 5.3'
+
+  - name: 'luassert library is installed'
+    command: 'lua5.3'
+    args: ['-e', 'require("luassert"); print("ok")']
+    exitCode: 0
+    expectedOutput:
+      - 'ok'

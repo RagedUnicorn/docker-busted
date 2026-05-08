@@ -1,0 +1,53 @@
+# Docker Compose configuration for running Busted test suites
+#
+# Usage:
+#   docker-compose -f docker-compose.test.yml run test-all
+#   docker-compose -f docker-compose.test.yml run test-verbose
+#
+# This will run Busted with various configurations against your spec files
+
+services:
+  # Run all specs with default output
+  test-all:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-test-all
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    command: ["spec"]
+
+  # Run with verbose output
+  test-verbose:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-test-verbose
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    command: ["--verbose", "spec"]
+
+  # Run only tests matching a pattern
+  test-filter:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-test-filter
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    command: ["--filter", "calculator", "spec"]
+
+  # Run with coverage support (requires luacov in your project)
+  test-coverage:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-test-coverage
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    command: ["--coverage", "spec"]
+
+  # Run for a specific Lua version standard
+  test-lua53:
+    image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
+    container_name: busted-test-lua53
+    volumes:
+      - ../:/workspace
+    working_dir: /workspace
+    command: ["--lua=lua5.3", "spec"]
