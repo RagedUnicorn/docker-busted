@@ -4,7 +4,7 @@
 FROM alpine:3.23.4 AS build
 
 # renovate: datasource=github-releases depName=lunarmodules/busted
-ARG BUSTED_VERSION=2.2.0
+ARG BUSTED_VERSION=2.3.0
 ARG PREFIX=/opt/busted
 
 # Build stage labels
