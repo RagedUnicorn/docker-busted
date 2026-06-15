@@ -1,7 +1,7 @@
 ############################################
 # Busted build stage
 ############################################
-FROM alpine:3.23.4 AS build
+FROM alpine:3.24.0 AS build
 
 # renovate: datasource=github-releases depName=lunarmodules/busted
 ARG BUSTED_VERSION=2.3.0
@@ -29,7 +29,7 @@ RUN luarocks-5.3 install busted ${BUSTED_VERSION}
 ############################################
 # Runtime stage
 ############################################
-FROM alpine:3.23.4
+FROM alpine:3.24.0
 
 ARG BUILD_DATE
 ARG VERSION
