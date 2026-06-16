@@ -143,7 +143,11 @@ You should see green dots for each `it(...)` block and a summary like
 This project uses [Renovate](https://docs.renovatebot.com/) to automatically manage dependency updates:
 
 - **Busted**: Renovate monitors LuaRocks/GitHub releases and creates PRs for new versions
-- **Alpine Linux**: Renovate monitors Docker Hub and creates PRs for new Alpine versions
+- **Alpine Linux**: Renovate monitors Docker Hub via the Docker datasource on the
+  `FROM` lines; regex `customManagers` in `renovate.json` also keep the
+  `org.opencontainers.image.base.name` label in the Dockerfile and the matching
+  value in `test/busted_metadata_test.yml` in sync, so all of these update
+  together in one PR.
 
 When Renovate creates a PR:
 
@@ -156,19 +160,25 @@ Manual version updates are rarely needed, but if required:
 
 ```dockerfile
 # Busted version
-ARG BUSTED_VERSION=2.2.0
+ARG BUSTED_VERSION=2.3.0
 
 # Alpine base image
-FROM alpine:3.23.4
+FROM alpine:3.24.0
 ```
+
+When manually updating the Alpine version, update all spots together — both
+`FROM alpine:X.Y.Z` lines, the `org.opencontainers.image.base.name` label in the
+Dockerfile, and the matching value in `test/busted_metadata_test.yml` — since
+they are otherwise only kept in sync automatically by Renovate.
 
 When manually updating versions:
 
-1. Update the `FROM alpine:X.X.X` lines in the Dockerfile (both build and runtime stages)
-2. Update `ARG BUSTED_VERSION=X.X.X` in the Dockerfile
-3. Test the build thoroughly
-4. Update version numbers in documentation
-5. Run the full test suite
+1. Update the `FROM alpine:X.Y.Z` lines in the Dockerfile (both build and runtime stages)
+2. Update the `org.opencontainers.image.base.name` label and the metadata test value to match
+3. Update `ARG BUSTED_VERSION=X.Y.Z` in the Dockerfile
+4. Test the build thoroughly
+5. Update version numbers in documentation
+6. Run the full test suite
 
 ### Adding New Features
 

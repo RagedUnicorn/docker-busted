@@ -14,6 +14,8 @@ metadataTest:
       value: 'https://github.com/RagedUnicorn/docker-busted'
     - key: 'org.opencontainers.image.licenses'
       value: 'MIT'
+    - key: 'org.opencontainers.image.base.name'
+      value: 'docker.io/library/alpine:3.24.0'
   entrypoint: ['busted']
   cmd: ['--help']
   workdir: '/workspace'
