@@ -1,17 +1,27 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test-file-structure" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="docker compose -f docker-compose.test.yml run --rm container-test" />
-    <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
-    <option name="SCRIPT_PATH" value="" />
-    <option name="SCRIPT_OPTIONS" value="" />
-    <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
-    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
-    <option name="INTERPRETER_PATH" value="/bin/sh" />
-    <option name="INTERPRETER_OPTIONS" value="" />
-    <option name="EXECUTE_IN_TERMINAL" value="true" />
-    <option name="EXECUTE_SCRIPT_FILE" value="false" />
-    <envs />
+  <configuration default="false" name="test-file-structure" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envVars">
+          <list>
+            <DockerEnvVarImpl>
+              <option name="name" value="CONTAINER_STRUCTURE_TEST_VERSION" />
+              <option name="value" value="latest" />
+            </DockerEnvVarImpl>
+            <DockerEnvVarImpl>
+              <option name="name" value="BUSTED_VERSION" />
+              <option name="value" value="test" />
+            </DockerEnvVarImpl>
+          </list>
+        </option>
+        <option name="services">
+          <list>
+            <option value="container-test" />
+          </list>
+        </option>
+        <option name="sourceFilePath" value="docker-compose.test.yml" />
+      </settings>
+    </deployment>
     <method v="2">
       <option name="RunConfigurationTask" enabled="true" run_configuration_name="build-image" run_configuration_type="ShConfigurationType" />
     </method>
