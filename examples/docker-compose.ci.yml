@@ -12,7 +12,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-ci-junit
     volumes:
-      - ../:/workspace
+      - ./:/workspace
       - ./reports:/reports
     working_dir: /workspace
     entrypoint: /bin/sh
@@ -23,7 +23,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-ci-tap
     volumes:
-      - ../:/workspace
+      - ./:/workspace
       - ./reports:/reports
     working_dir: /workspace
     entrypoint: /bin/sh
@@ -34,7 +34,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-ci-json
     volumes:
-      - ../:/workspace
+      - ./:/workspace
       - ./reports:/reports
     working_dir: /workspace
     entrypoint: /bin/sh
@@ -45,7 +45,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-ci-plain
     volumes:
-      - ../:/workspace
+      - ./:/workspace
       - ./reports:/reports
     working_dir: /workspace
     entrypoint: /bin/sh
@@ -56,6 +56,6 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-ci-check
     volumes:
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     command: ["--output=plainTerminal", "spec"]

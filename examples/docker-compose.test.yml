@@ -12,7 +12,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-test-all
     volumes:
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     command: ["spec"]
 
@@ -21,7 +21,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-test-verbose
     volumes:
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     command: ["--verbose", "spec"]
 
@@ -30,7 +30,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-test-filter
     volumes:
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     command: ["--filter", "calculator", "spec"]
 
@@ -39,7 +39,7 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-test-coverage
     volumes:
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     command: ["--coverage", "spec"]
 
@@ -48,6 +48,6 @@ services:
     image: ragedunicorn/busted:${BUSTED_VERSION:-latest}
     container_name: busted-test-lua53
     volumes:
-      - ../:/workspace
+      - ./:/workspace
     working_dir: /workspace
     command: ["--lua=lua5.3", "spec"]
