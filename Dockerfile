@@ -1,7 +1,7 @@
 ############################################
 # Busted build stage
 ############################################
-FROM alpine:3.24.0 AS build
+FROM alpine:3.24.1 AS build
 
 # renovate: datasource=github-releases depName=lunarmodules/busted
 ARG BUSTED_VERSION=2.3.0
@@ -29,7 +29,7 @@ RUN luarocks-5.3 install busted ${BUSTED_VERSION}
 ############################################
 # Runtime stage
 ############################################
-FROM alpine:3.24.0
+FROM alpine:3.24.1
 
 ARG BUILD_DATE
 ARG VERSION
@@ -44,7 +44,7 @@ LABEL org.opencontainers.image.title="Busted on Alpine Linux" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.0"
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.1"
 
 # Install runtime dependencies only
 # libstdc++ is required by luasystem at runtime
