@@ -1,6 +1,6 @@
 # docker-busted
 
-![](./docs/docker_busted.png)
+![](./docs/docker_busted_banner.svg)
 
 [![Release Build](https://github.com/RagedUnicorn/docker-busted/actions/workflows/docker_release.yml/badge.svg)](https://github.com/RagedUnicorn/docker-busted/actions/workflows/docker_release.yml)
 [![Test](https://github.com/RagedUnicorn/docker-busted/actions/workflows/test.yml/badge.svg)](https://github.com/RagedUnicorn/docker-busted/actions/workflows/test.yml)
