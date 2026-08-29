@@ -1,5 +1,7 @@
 # Busted Alpine Docker Image
 
+![Docker Busted](https://raw.githubusercontent.com/RagedUnicorn/docker-busted/master/docs/docker_busted_banner.png)
+
 A lightweight Busted build on Alpine Linux for fast and reliable Lua unit testing.
 
 ## Quick Start
