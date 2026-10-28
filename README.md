@@ -18,6 +18,7 @@ This Docker image provides a lightweight Busted installation on Alpine Linux. Bu
 - **Busted 2.2.0**: Latest stable version installed via LuaRocks
 - **Multi-stage build**: Optimized for minimal final image size
 - **Volume mounting**: Easy spec input through `/workspace`
+- **Non-root user**: runs as the unprivileged `busted` user
 - **Multiple formatters**: utfTerminal, plainTerminal, TAP, junit, json, gtest
 
 ## Quick Start
@@ -159,6 +160,12 @@ The compose services support environment variables for customization:
 2. **Configuration File**: Create a `.busted` file in your project root for persistent settings (see `examples/.busted`)
 
 3. **Persistent Settings**: The repository includes a `.env` file with default settings
+
+4. **Bind-Mount Ownership**: The image runs as the non-root `busted` user. On Linux and macOS hosts, run the container as your own user so reports and coverage files written into a bind mount stay owned by you:
+   ```bash
+   docker run --rm --user "$(id -u):$(id -g)" -v "$(pwd)":/workspace ragedunicorn/busted:latest spec
+   ```
+   In Docker Compose, use `user: "${UID:-1000}:${GID:-1000}"` (as the `examples/docker-compose.ci.yml` services do). Windows hosts can skip this — Docker Desktop bind mounts do not carry Unix file ownership.
 
 ## Configuration
 

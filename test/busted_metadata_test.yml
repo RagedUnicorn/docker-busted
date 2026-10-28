@@ -19,3 +19,4 @@ metadataTest:
   entrypoint: ['busted']
   cmd: ['--help']
   workdir: '/workspace'
+  user: 'busted'

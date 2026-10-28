@@ -23,7 +23,8 @@ test-results/
 luacov.report.out
 luacov.stats.out
 
-examples/reports/
+examples/reports/*
+!examples/reports/.gitkeep
 
 # Local environment
 .env.local

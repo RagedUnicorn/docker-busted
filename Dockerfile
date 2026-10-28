@@ -55,7 +55,13 @@ RUN apk add --no-cache --update \
 # Copy busted and all dependencies from build stage
 COPY --from=build /usr/local /usr/local
 
+# Non-root user so spec code does not run as container root
+RUN adduser -D -s /sbin/nologin busted
+
 WORKDIR /workspace
+RUN chown -R busted:busted /workspace
+
+USER busted
 
 # Set the entrypoint to busted binary
 ENTRYPOINT ["busted"]
