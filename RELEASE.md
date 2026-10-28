@@ -6,8 +6,8 @@ This document describes how to create a new release for the Docker Busted projec
 
 ```bash
 # Tag format: v{busted_version}-alpine{alpine_version}-{build_number}
-git tag -a v2.2.0-alpine3.23.4-1 -m "v2.2.0-alpine3.23.4-1"
-git push origin v2.2.0-alpine3.23.4-1
+git tag -a v2.3.0-alpine3.24.3-1 -m "v2.3.0-alpine3.24.3-1"
+git push origin v2.3.0-alpine3.24.3-1
 ```
 
 This automatically triggers the release process via GitHub Actions.
@@ -19,10 +19,10 @@ See [README.md](README.md#versioning) for the complete versioning documentation.
 **Format:** `v{busted_version}-alpine{alpine_version}-{build_number}`
 
 Examples:
-- `v2.2.0-alpine3.23.4-1` - Initial release
-- `v2.2.0-alpine3.23.4-2` - Rebuild with same versions
-- `v2.2.0-alpine3.23.5-1` - Alpine update (build resets to 1)
-- `v2.3.0-alpine3.23.4-1` - Busted update (build resets to 1)
+- `v2.3.0-alpine3.24.3-1` - First build of these versions
+- `v2.3.0-alpine3.24.3-2` - Rebuild with same versions
+- `v2.3.0-alpine3.24.4-1` - Alpine update (build resets to 1)
+- `v2.4.0-alpine3.24.3-1` - Busted update (build resets to 1)
 
 ## Release Workflow
 
@@ -99,7 +99,7 @@ Before creating a release:
 
 ### Release didn't trigger
 
-- Ensure tag starts with `v` and follows the format (e.g., `v2.2.0-alpine3.23.4-1`)
+- Ensure tag starts with `v` and follows the format (e.g., `v2.3.0-alpine3.24.3-1`)
 - Check GitHub Actions tab for workflow runs
 - Verify you have push permissions
 
@@ -138,10 +138,10 @@ If automation fails, you can create a release manually:
 
 1. Go to repository's "Releases" page
 2. Click "Create a new release"
-3. Choose your tag (must follow format: `v2.2.0-alpine3.23.4-1`)
+3. Choose your tag (must follow format: `v2.3.0-alpine3.24.3-1`)
 4. Add release notes
 5. Include Docker pull commands:
    ```
-   docker pull ghcr.io/ragedunicorn/docker-busted:2.2.0-alpine3.23.4-1
-   docker pull ragedunicorn/busted:2.2.0-alpine3.23.4-1
+   docker pull ghcr.io/ragedunicorn/docker-busted:2.3.0-alpine3.24.3-1
+   docker pull ragedunicorn/busted:2.3.0-alpine3.24.3-1
    ```

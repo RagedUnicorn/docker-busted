@@ -11,7 +11,7 @@ A lightweight Busted build on Alpine Linux for fast and reliable Lua unit testin
 docker pull ragedunicorn/busted:latest
 
 # Or pull specific version
-docker pull ragedunicorn/busted:2.2.0-alpine3.23.4-1
+docker pull ragedunicorn/busted:2.3.0-alpine3.24.1-1
 
 # Run all specs in the spec/ directory
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
@@ -77,10 +77,10 @@ This image uses semantic versioning that includes all component versions:
 
 ### Version Examples
 
-- `2.2.0-alpine3.23.4-1` - Initial release with Busted 2.2.0 and Alpine 3.23.4
-- `2.2.0-alpine3.23.4-2` - Rebuild of same versions (bug fixes, optimizations)
-- `2.2.0-alpine3.23.5-1` - Alpine Linux patch update
-- `2.3.0-alpine3.23.4-1` - Busted version update
+- `2.3.0-alpine3.24.1-1` - Busted 2.3.0 on Alpine 3.24.1, build 1
+- `2.3.0-alpine3.24.1-2` - Rebuild of same versions (bug fixes, optimizations)
+- `2.3.0-alpine3.24.3-1` - Alpine Linux patch update (build resets to 1)
+- `2.4.0-alpine3.24.3-1` - Busted version update (build resets to 1)
 
 When updates are available through automated dependency management, new releases are created with appropriate version tags.
 

@@ -174,21 +174,21 @@ When testing different versions, always build locally first:
 
 ```bash
 # Build a specific version locally
-docker build -t ragedunicorn/busted:2.2.0-alpine3.23.4-1 .
+docker build -t ragedunicorn/busted:2.3.0-alpine3.24.3-1 .
 ```
 
 **Linux/macOS:**
 
 ```bash
 # Test that specific version
-BUSTED_VERSION=2.2.0-alpine3.23.4-1 docker compose -f docker-compose.test.yml run test-all
+BUSTED_VERSION=2.3.0-alpine3.24.3-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:BUSTED_VERSION="2.2.0-alpine3.23.4-1"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_VERSION="2.3.0-alpine3.24.3-1"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ## Troubleshooting Test Failures

@@ -47,10 +47,10 @@ The container uses Busted as the entrypoint, so any Busted parameters can be pas
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest [busted-options]
 
 # Using specific Busted version (latest Alpine build)
-docker run -v $(pwd):/workspace ragedunicorn/busted:2.2.0 [busted-options]
+docker run -v $(pwd):/workspace ragedunicorn/busted:2.3.0 [busted-options]
 
 # Using exact version combination
-docker run -v $(pwd):/workspace ragedunicorn/busted:2.2.0-alpine3.23.4-1 [busted-options]
+docker run -v $(pwd):/workspace ragedunicorn/busted:2.3.0-alpine3.24.1-1 [busted-options]
 ```
 
 ### Examples
@@ -203,7 +203,7 @@ This project uses semantic versioning that matches the Docker image contents:
 **Format:** `{busted_version}-alpine{alpine_version}-{build_number}`
 
 Examples:
-- `2.2.0-alpine3.23.4-1` - Busted 2.2.0 on Alpine 3.23.4, build 1
+- `2.3.0-alpine3.24.1-1` - Busted 2.3.0 on Alpine 3.24.1, build 1
 - `latest` - Most recent stable release
 
 For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).

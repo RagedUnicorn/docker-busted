@@ -71,8 +71,8 @@ docker build -t ragedunicorn/busted:dev .
 docker build \
   --build-arg BUSTED_VERSION=2.3.0 \
   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-  --build-arg VERSION=2.2.0-alpine3.23.4-1 \
-  -t ragedunicorn/busted:2.2.0-alpine3.23.4-1 .
+  --build-arg VERSION=2.3.0-alpine3.24.3-1 \
+  -t ragedunicorn/busted:2.3.0-alpine3.24.3-1 .
 
 # Multi-platform build (requires buildx)
 docker buildx build \
@@ -135,7 +135,7 @@ docker run --rm -v "$(pwd)/examples:/workspace" ragedunicorn/busted:test spec
 ```
 
 You should see green dots for each `it(...)` block and a summary like
-`5 successes / 0 failures / 1 pending / 0 errors`.
+`14 successes / 0 failures / 0 errors / 1 pending`.
 
 ## Making Changes
 
@@ -167,7 +167,7 @@ Manual version updates are rarely needed, but if required:
 ARG BUSTED_VERSION=2.3.0
 
 # Alpine base image
-FROM alpine:3.24.0
+FROM alpine:3.24.3
 ```
 
 When manually updating the Alpine version, update all spots together — the
