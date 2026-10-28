@@ -20,7 +20,7 @@ docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
 ## Features
 
 - 🚀 **Small footprint**: Lightweight Alpine-based runtime image
-- 📦 **Busted 2.2.0**: Latest stable version installed via LuaRocks
+- 📦 **Busted 2.3.0**: Installed from Alpine's signed `lua5.3-busted` package
 - 🔍 **Rich assertions**: Powered by `luassert` (mocks, spies, stubs)
 - 🏗️ **Multi-platform**: Supports linux/amd64 and linux/arm64
 - ⚡ **CI-friendly**: Built-in JUnit, TAP, JSON, and plain output formatters

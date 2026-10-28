@@ -2,7 +2,7 @@ schemaVersion: 2.0.0
 
 fileExistenceTests:
   - name: 'Busted binary exists'
-    path: '/usr/local/bin/busted'
+    path: '/usr/bin/busted-5.3'
     shouldExist: true
     permissions: '-rwxr-xr-x'
 

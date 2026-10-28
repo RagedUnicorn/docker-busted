@@ -66,9 +66,10 @@ The development mode:
 # Basic build
 docker build -t ragedunicorn/busted:dev .
 
-# Build with specific versions
+# Build with specific versions (BUSTED_VERSION must be a release the
+# Alpine base image ships as lua5.3-busted)
 docker build \
-  --build-arg BUSTED_VERSION=2.2.0 \
+  --build-arg BUSTED_VERSION=2.3.0 \
   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
   --build-arg VERSION=2.2.0-alpine3.23.4-1 \
   -t ragedunicorn/busted:2.2.0-alpine3.23.4-1 .
@@ -142,7 +143,10 @@ You should see green dots for each `it(...)` block and a summary like
 
 This project uses [Renovate](https://docs.renovatebot.com/) to automatically manage dependency updates:
 
-- **Busted**: Renovate monitors LuaRocks/GitHub releases and creates PRs for new versions
+- **Busted**: Renovate monitors GitHub releases and creates PRs for new versions.
+  Busted is installed from the Alpine `lua5.3-busted` package with apk's fuzzy
+  `~` match, so a new upstream release only builds once the Alpine base image
+  ships it; such a PR may have to wait for (or be combined with) an Alpine bump
 - **Alpine Linux**: Renovate monitors Docker Hub via the Docker datasource on the
   `FROM` lines; regex `customManagers` in `renovate.json` also keep the
   `org.opencontainers.image.base.name` label in the Dockerfile and the matching
@@ -166,16 +170,17 @@ ARG BUSTED_VERSION=2.3.0
 FROM alpine:3.24.0
 ```
 
-When manually updating the Alpine version, update all spots together — both
-`FROM alpine:X.Y.Z` lines, the `org.opencontainers.image.base.name` label in the
+When manually updating the Alpine version, update all spots together — the
+`FROM alpine:X.Y.Z` line, the `org.opencontainers.image.base.name` label in the
 Dockerfile, and the matching value in `test/busted_metadata_test.yml` — since
 they are otherwise only kept in sync automatically by Renovate.
 
 When manually updating versions:
 
-1. Update the `FROM alpine:X.Y.Z` lines in the Dockerfile (both build and runtime stages)
+1. Update the `FROM alpine:X.Y.Z` line in the Dockerfile
 2. Update the `org.opencontainers.image.base.name` label and the metadata test value to match
-3. Update `ARG BUSTED_VERSION=X.Y.Z` in the Dockerfile
+3. Update `ARG BUSTED_VERSION=X.Y.Z` in the Dockerfile to the `lua5.3-busted`
+   version the Alpine release ships (`apk search -x lua5.3-busted`)
 4. Test the build thoroughly
 5. Update version numbers in documentation
 6. Run the full test suite
@@ -209,7 +214,7 @@ Example of adding a new formatter test:
 
 ### Dockerfile Best Practices
 
-1. **Multi-stage builds**: Keep the build stage separate from runtime
+1. **Prefer Alpine packages**: Install signed apk packages instead of fetching from language registries at build time
 2. **Layer optimization**: Group related commands to minimize layers
 3. **Cache efficiency**: Order commands from least to most frequently changed
 4. **Security**: Don't include build tools in the final image
@@ -238,9 +243,6 @@ Example of adding a new formatter test:
 ```bash
 # Verbose build output
 docker build --progress=plain --no-cache -t ragedunicorn/busted:debug .
-
-# Check specific build stage
-docker build --target build -t busted-build-stage .
 ```
 
 **Busted not found:**
@@ -248,7 +250,7 @@ docker build --target build -t busted-build-stage .
 ```bash
 # Check installation paths
 docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "which busted"
-docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "ls -la /usr/local/bin/"
+docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "ls -la /usr/bin/busted*"
 ```
 
 **Lua module issues:**
@@ -262,7 +264,7 @@ docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "lua5.3 -e 'print(pac
 docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "lua5.3 -e 'require\"luassert\" print(\"ok\")'"
 
 # List installed busted/luassert files
-docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "find /usr/local -name 'busted*' -o -name 'luassert*' | sort"
+docker run --rm --entrypoint sh ragedunicorn/busted:dev -c "apk info -L lua5.3-busted lua5.3-luassert"
 ```
 
 **Permission issues:**

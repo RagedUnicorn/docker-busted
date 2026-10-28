@@ -15,8 +15,8 @@ This Docker image provides a lightweight Busted installation on Alpine Linux. Bu
 ## Features
 
 - **Small footprint**: Lightweight runtime image using Alpine Linux
-- **Busted 2.2.0**: Latest stable version installed via LuaRocks
-- **Multi-stage build**: Optimized for minimal final image size
+- **Busted 2.3.0**: Installed from Alpine's signed `lua5.3-busted` package
+- **Reproducible**: All Lua dependencies come from the Alpine release, nothing is fetched from LuaRocks
 - **Volume mounting**: Easy spec input through `/workspace`
 - **Non-root user**: runs as the unprivileged `busted` user
 - **Multiple formatters**: utfTerminal, plainTerminal, TAP, junit, json, gtest
