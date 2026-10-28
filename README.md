@@ -159,7 +159,10 @@ The compose services support environment variables for customization:
 
 2. **Configuration File**: Create a `.busted` file in your project root for persistent settings (see `examples/.busted`)
 
-3. **Persistent Settings**: The repository includes a `.env` file with default settings
+3. **Persistent Settings**: The repository includes a `.env` file with default settings. You can modify it to set your preferred versions:
+   ```env
+   BUSTED_VERSION=2.3.0-alpine3.24.1-1
+   ```
 
 4. **Bind-Mount Ownership**: The image runs as the non-root `busted` user. On Linux and macOS hosts, run the container as your own user so reports and coverage files written into a bind mount stay owned by you:
    ```bash

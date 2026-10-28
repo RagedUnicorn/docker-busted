@@ -44,5 +44,6 @@ target/
 *.log
 
 # Local environment
+.env
 .env.local
 .env.*.local
