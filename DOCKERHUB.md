@@ -17,6 +17,15 @@ docker pull ragedunicorn/busted:2.3.0-alpine3.24.1-1
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
 ```
 
+On Windows, use the PowerShell form - `${PWD}` **with braces** and the colon
+inside the quotes (without braces PowerShell parses `$PWD:` as a
+scope-qualified variable, as in `$env:PATH`, and rejects the argument):
+
+```powershell
+# Run all specs in the spec/ directory
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec
+```
+
 ## Features
 
 - 🚀 **Small footprint**: Lightweight Alpine-based runtime image
@@ -38,16 +47,35 @@ docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec
+```
+
 ### Run a single spec file
 
 ```bash
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec/calculator_spec.lua
 ```
 
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec/calculator_spec.lua
+```
+
 ### Filter tests by name
 
 ```bash
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest \
+  --filter "math" spec
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest `
   --filter "math" spec
 ```
 
@@ -63,10 +91,29 @@ docker run -v $(pwd):/workspace ragedunicorn/busted:latest \
   --output=TAP spec
 ```
 
+PowerShell (`Out-File -Encoding utf8` instead of `>`, which Windows
+PowerShell 5.1 writes as UTF-16):
+
+```powershell
+# JUnit format for CI systems
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest `
+  --output=junit spec | Out-File -Encoding utf8 busted-report.xml
+
+# TAP format
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest `
+  --output=TAP spec
+```
+
 ### Use a `.busted` configuration profile
 
 ```bash
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest --run=ci
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --run=ci
 ```
 
 ## Tags

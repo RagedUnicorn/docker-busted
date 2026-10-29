@@ -34,6 +34,21 @@ docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec/my_spec.lua
 ```
 
+On Windows, use the PowerShell form:
+
+```powershell
+# Run Busted on your spec directory
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec
+
+# Run a single spec file
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec/my_spec.lua
+```
+
+Write `${PWD}` **with braces** and keep the colon inside the quotes - without
+braces PowerShell parses `$PWD:` as a scope-qualified variable (as in
+`$env:PATH`) and rejects the argument. See the
+[Windows (PowerShell) notes](#windows-powershell-notes) for details.
+
 For development and building from source, see [DEVELOPMENT.md](DEVELOPMENT.md).
 
 ## Usage
@@ -51,6 +66,19 @@ docker run -v $(pwd):/workspace ragedunicorn/busted:2.3.0 [busted-options]
 
 # Using exact version combination
 docker run -v $(pwd):/workspace ragedunicorn/busted:2.3.0-alpine3.24.1-1 [busted-options]
+```
+
+PowerShell:
+
+```powershell
+# Using latest version
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest [busted-options]
+
+# Using specific Busted version (latest Alpine build)
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:2.3.0 [busted-options]
+
+# Using exact version combination
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:2.3.0-alpine3.24.1-1 [busted-options]
 ```
 
 ### Examples
@@ -101,6 +129,76 @@ docker run -v $(pwd):/workspace ragedunicorn/busted:latest --run=ci
 ```bash
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest --pattern=_test spec
 ```
+
+#### PowerShell
+
+The same examples in PowerShell:
+
+```powershell
+# Run all specs in spec/
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec
+
+# Run a single spec file
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec/my_spec.lua
+
+# Run with verbose output
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --verbose spec
+
+# Filter tests by pattern
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --filter "math" spec
+
+# TAP, JUnit XML, JSON and plain (no colors) output
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --output=TAP spec
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --output=junit spec
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --output=json spec
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --output=plainTerminal spec
+
+# Use the "ci" profile from a .busted configuration file
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --run=ci
+
+# Run with a custom pattern
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --pattern=_test spec
+```
+
+### Windows (PowerShell) notes
+
+The PowerShell variants differ from the bash ones only in the mount, which is
+written `-v "${PWD}:/workspace"` instead of `-v $(pwd):/workspace`. The
+spelling matters:
+
+- Pasting the bash form into PowerShell breaks: PowerShell ends the argument
+  after the `$(pwd)` subexpression, so `$(pwd):/workspace` reaches Docker as
+  two arguments (`C:\path` and `:/workspace`) and the run fails with
+  `invalid reference format`.
+- `"$PWD:/workspace"` without braces is a parse error: PowerShell reads a
+  colon after a variable as a scope qualifier (as in `$env:PATH`), and `/` is
+  not a valid variable-name character.
+- `"${PWD}:/workspace"` works: the braces end the variable name at `PWD`, the
+  colon stays literal, and Docker splits the resulting `C:\path:/workspace`
+  on the second colon because it recognises the `C:` drive prefix.
+
+To check what the container actually sees under `/workspace`, run a
+look-inside command:
+
+```powershell
+docker run --rm -v "${PWD}:/workspace" --entrypoint sh ragedunicorn/busted:latest -c 'pwd; ls -la /workspace'
+```
+
+The single quotes keep `pwd; ls -la /workspace` as one literal argument to
+the container's `sh`, so the `;` runs inside the container - unquoted,
+PowerShell would treat `;` as its own statement separator and run
+`ls -la /workspace` on the host.
+
+When redirecting a report to a file, prefer `Out-File -Encoding utf8` over
+`>`: Windows PowerShell 5.1 writes `>` output as UTF-16, which most CI report
+parsers reject (PowerShell 7 writes UTF-8 either way):
+
+```powershell
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --output=junit spec | Out-File -Encoding utf8 busted-report.xml
+```
+
+Line endings are not a concern: Lua treats `\r\n` as ordinary whitespace, so
+specs checked out with Windows (CRLF) line endings run unchanged.
 
 ## Docker Compose Usage
 
@@ -194,6 +292,12 @@ Run a named profile with `--run=<name>`:
 
 ```bash
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest --run=ci
+```
+
+PowerShell:
+
+```powershell
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest --run=ci
 ```
 
 ## Versioning
