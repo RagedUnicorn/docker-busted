@@ -66,21 +66,21 @@ docker build -t ragedunicorn/busted:test .
 
 ```bash
 # Run tests against your local build
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Run tests against your local build
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
 # Run tests against your local build
-set BUSTED_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set BUSTED_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Why local testing is important:**
@@ -96,7 +96,7 @@ set BUSTED_VERSION=test && docker compose -f docker-compose.test.yml run test-al
 
 ```bash
 docker pull ragedunicorn/busted:latest
-docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=latest docker compose -f docker-compose.test.yml run test-all
 ```
 
 **✅ DO THIS - test your local build:**
@@ -105,15 +105,21 @@ Linux/macOS:
 
 ```bash
 docker build -t ragedunicorn/busted:test .
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 Windows (PowerShell):
 
 ```powershell
 docker build -t ragedunicorn/busted:test .
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
+
+### Why `BUSTED_TEST_VERSION` and not `BUSTED_VERSION`
+
+`docker-compose.test.yml` reads its own variable, `BUSTED_TEST_VERSION`, which defaults to `test`. The runtime compose file and the examples read `BUSTED_VERSION`, which `.env` pins to `latest`.
+
+Keeping them separate matters. If both files read the same variable, the `latest` value in `.env` silently wins over the `:-test` fallback in the test compose file, and a bare `docker compose -f docker-compose.test.yml run test-all` quietly validates the **published** image instead of the one you just built - exactly the failure mode this document warns about. With two variables, the bare command always tests the local build.
 
 ### Test Execution
 
@@ -123,21 +129,21 @@ Run all tests against your local build:
 
 ```bash
 # Ensure you've built locally first!
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Ensure you've built locally first!
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (Command Prompt):**
 
 ```cmd
 # Ensure you've built locally first!
-set BUSTED_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set BUSTED_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 ```
 
 Run specific test categories:
@@ -146,26 +152,26 @@ Run specific test categories:
 
 ```bash
 # File structure and library tests
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml up container-test
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test
 
 # Command execution and spec-running tests
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata and label tests
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # File structure and library tests
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test
 
 # Command execution and spec-running tests
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
 
 # Metadata and label tests
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-metadata
 ```
 
 ### Testing Different Versions
@@ -181,14 +187,14 @@ docker build -t ragedunicorn/busted:2.3.0-alpine3.24.3-1 .
 
 ```bash
 # Test that specific version
-BUSTED_VERSION=2.3.0-alpine3.24.3-1 docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=2.3.0-alpine3.24.3-1 docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:BUSTED_VERSION="2.3.0-alpine3.24.3-1"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="2.3.0-alpine3.24.3-1"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ## Troubleshooting Test Failures
@@ -210,7 +216,7 @@ docker run --rm -v $(pwd)/test:/test:ro -v /var/run/docker.sock:/var/run/docker.
 
 1. **Testing remote images instead of local builds**
    - Remote images (Docker Hub, GHCR) have labels overridden by CI/CD
-   - Always test your local builds with `BUSTED_VERSION=test`
+   - Always test your local builds with `BUSTED_TEST_VERSION=test`
 
 2. **Label value mismatches**
    - CI/CD systems may capitalize values (e.g., "RagedUnicorn" vs "ragedunicorn")
@@ -236,13 +242,13 @@ docker build -t ragedunicorn/busted:test .
 Linux/macOS:
 
 ```bash
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 ```
 
 Windows (PowerShell):
 
 ```powershell
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ### Permission Errors
@@ -301,7 +307,7 @@ Manual integration example:
 ```yaml
 - name: Run Container Structure Tests
   env:
-    BUSTED_VERSION: test
+    BUSTED_TEST_VERSION: test
   run: docker compose -f docker-compose.test.yml run test-all
 ```
 

@@ -95,30 +95,30 @@ docker build -t ragedunicorn/busted:test .
 
 ```bash
 # Run all tests against your local build
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml run test-all
 
 # Run specific tests during development
-BUSTED_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
+BUSTED_TEST_VERSION=test docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Windows Command Prompt:**
 
 ```cmd
 # Run all tests against your local build
-set BUSTED_VERSION=test && docker compose -f docker-compose.test.yml run test-all
+set BUSTED_TEST_VERSION=test && docker compose -f docker-compose.test.yml run test-all
 
 # Run specific tests during development
-set BUSTED_VERSION=test && docker compose -f docker-compose.test.yml up container-test-command
+set BUSTED_TEST_VERSION=test && docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Windows PowerShell:**
 
 ```powershell
 # Run all tests against your local build
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml run test-all
 
 # Run specific tests during development
-$env:BUSTED_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
+$env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up container-test-command
 ```
 
 **Important:** Never test against remote images - they may have different labels or configurations due to CI/CD overrides.
