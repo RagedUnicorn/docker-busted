@@ -10,8 +10,8 @@ A lightweight Busted build on Alpine Linux for fast and reliable Lua unit testin
 # Pull latest version
 docker pull ragedunicorn/busted:latest
 
-# Or pull specific version
-docker pull ragedunicorn/busted:2.3.0-alpine3.24.1-1
+# Or pull specific version (see the Tags tab for the available versions)
+docker pull ragedunicorn/busted:<busted-version>-alpine<alpine-version>-<build>
 
 # Run all specs in the spec/ directory
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest spec
@@ -29,7 +29,7 @@ docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest spec
 ## Features
 
 - 🚀 **Small footprint**: Lightweight Alpine-based runtime image
-- 📦 **Busted 2.3.0**: Installed from Alpine's signed `lua5.3-busted` package
+- 📦 **Busted**: Installed from Alpine's signed `lua5.3-busted` package
 - 🔍 **Rich assertions**: Powered by `luassert` (mocks, spies, stubs)
 - 🏗️ **Multi-platform**: Supports linux/amd64 and linux/arm64
 - ⚡ **CI-friendly**: Built-in JUnit, TAP, JSON, and plain output formatters
@@ -124,10 +124,16 @@ This image uses semantic versioning that includes all component versions:
 
 ### Version Examples
 
-- `2.3.0-alpine3.24.1-1` - Busted 2.3.0 on Alpine 3.24.1, build 1
-- `2.3.0-alpine3.24.1-2` - Rebuild of same versions (bug fixes, optimizations)
-- `2.3.0-alpine3.24.3-1` - Alpine Linux patch update (build resets to 1)
-- `2.4.0-alpine3.24.3-1` - Busted version update (build resets to 1)
+`X.Y.Z` is the Busted version, `A.B.C` the Alpine version:
+
+- `X.Y.Z-alpineA.B.C-1` - Busted X.Y.Z on Alpine A.B.C, build 1
+- `X.Y.Z-alpineA.B.C-2` - Rebuild of same versions (bug fixes, optimizations)
+- `X.Y.Z-alpineA.B.D-1` - Alpine Linux patch update (build resets to 1)
+- `X.Y+1.0-alpineA.B.C-1` - Busted version update (build resets to 1)
+- `X.Y.Z` - Most recent build of Busted X.Y.Z
+- `latest` - Most recent stable release
+
+The available versions are listed in the [Tags tab](https://hub.docker.com/r/ragedunicorn/busted/tags).
 
 When updates are available through automated dependency management, new releases are created with appropriate version tags.
 

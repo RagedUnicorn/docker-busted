@@ -15,7 +15,7 @@ This Docker image provides a lightweight Busted installation on Alpine Linux. Bu
 ## Features
 
 - **Small footprint**: Lightweight runtime image using Alpine Linux
-- **Busted 2.3.0**: Installed from Alpine's signed `lua5.3-busted` package
+- **Busted**: Installed from Alpine's signed `lua5.3-busted` package
 - **Reproducible**: All Lua dependencies come from the Alpine release, nothing is fetched from LuaRocks
 - **Volume mounting**: Easy spec input through `/workspace`
 - **Non-root user**: runs as the unprivileged `busted` user
@@ -62,10 +62,10 @@ The container uses Busted as the entrypoint, so any Busted parameters can be pas
 docker run -v $(pwd):/workspace ragedunicorn/busted:latest [busted-options]
 
 # Using specific Busted version (latest Alpine build)
-docker run -v $(pwd):/workspace ragedunicorn/busted:2.3.0 [busted-options]
+docker run -v $(pwd):/workspace ragedunicorn/busted:<busted-version> [busted-options]
 
 # Using exact version combination
-docker run -v $(pwd):/workspace ragedunicorn/busted:2.3.0-alpine3.24.1-1 [busted-options]
+docker run -v $(pwd):/workspace ragedunicorn/busted:<busted-version>-alpine<alpine-version>-<build> [busted-options]
 ```
 
 PowerShell:
@@ -75,11 +75,14 @@ PowerShell:
 docker run -v "${PWD}:/workspace" ragedunicorn/busted:latest [busted-options]
 
 # Using specific Busted version (latest Alpine build)
-docker run -v "${PWD}:/workspace" ragedunicorn/busted:2.3.0 [busted-options]
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:<busted-version> [busted-options]
 
 # Using exact version combination
-docker run -v "${PWD}:/workspace" ragedunicorn/busted:2.3.0-alpine3.24.1-1 [busted-options]
+docker run -v "${PWD}:/workspace" ragedunicorn/busted:<busted-version>-alpine<alpine-version>-<build> [busted-options]
 ```
+
+Available tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/busted/tags) and in the
+[GitHub releases](https://github.com/RagedUnicorn/docker-busted/releases).
 
 ### Examples
 
@@ -259,7 +262,7 @@ The compose services support environment variables for customization:
 
 3. **Persistent Settings**: The repository includes a `.env` file with default settings. You can modify it to set your preferred versions:
    ```env
-   BUSTED_VERSION=2.3.0-alpine3.24.1-1
+   BUSTED_VERSION=<busted-version>-alpine<alpine-version>-<build>
    ```
 
 4. **Bind-Mount Ownership**: The image runs as the non-root `busted` user. On Linux and macOS hosts, run the container as your own user so reports and coverage files written into a bind mount stay owned by you:
@@ -306,9 +309,12 @@ This project uses semantic versioning that matches the Docker image contents:
 
 **Format:** `{busted_version}-alpine{alpine_version}-{build_number}`
 
-Examples:
-- `2.3.0-alpine3.24.1-1` - Busted 2.3.0 on Alpine 3.24.1, build 1
+Examples (`X.Y.Z` is the Busted version, `A.B.C` the Alpine version):
+- `X.Y.Z-alpineA.B.C-1` - Busted X.Y.Z on Alpine A.B.C, build 1
+- `X.Y.Z` - Most recent build of Busted X.Y.Z
 - `latest` - Most recent stable release
+
+The current tags are listed on [Docker Hub](https://hub.docker.com/r/ragedunicorn/busted/tags).
 
 For detailed release process and versioning guidelines, see [RELEASE.md](RELEASE.md).
 

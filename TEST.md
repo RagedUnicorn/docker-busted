@@ -179,22 +179,23 @@ $env:BUSTED_TEST_VERSION="test"; docker compose -f docker-compose.test.yml up co
 When testing different versions, always build locally first:
 
 ```bash
-# Build a specific version locally
-docker build -t ragedunicorn/busted:2.3.0-alpine3.24.3-1 .
+# Build a specific version locally (<tag> is any local tag, e.g. the
+# release tag without the leading v)
+docker build -t ragedunicorn/busted:<tag> .
 ```
 
 **Linux/macOS:**
 
 ```bash
 # Test that specific version
-BUSTED_TEST_VERSION=2.3.0-alpine3.24.3-1 docker compose -f docker-compose.test.yml run test-all
+BUSTED_TEST_VERSION=<tag> docker compose -f docker-compose.test.yml run test-all
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 # Test that specific version
-$env:BUSTED_TEST_VERSION="2.3.0-alpine3.24.3-1"; docker compose -f docker-compose.test.yml run test-all
+$env:BUSTED_TEST_VERSION="<tag>"; docker compose -f docker-compose.test.yml run test-all
 ```
 
 ## Troubleshooting Test Failures

@@ -66,19 +66,28 @@ The development mode:
 # Basic build
 docker build -t ragedunicorn/busted:dev .
 
-# Build with specific versions (BUSTED_VERSION must be a release the
-# Alpine base image ships as lua5.3-busted)
+# Build with version metadata (Busted and Alpine come from the Dockerfile)
 docker build \
-  --build-arg BUSTED_VERSION=2.3.0 \
   --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-  --build-arg VERSION=2.3.0-alpine3.24.3-1 \
-  -t ragedunicorn/busted:2.3.0-alpine3.24.3-1 .
+  --build-arg VERSION=dev \
+  -t ragedunicorn/busted:dev .
+
+# Build a different Busted version than the Dockerfile default
+# (BUSTED_VERSION must be a release the Alpine base image ships as
+# lua5.3-busted)
+docker build \
+  --build-arg BUSTED_VERSION=<busted-version> \
+  -t ragedunicorn/busted:dev .
 
 # Multi-platform build (requires buildx)
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   -t ragedunicorn/busted:dev .
 ```
+
+The Busted version is the `BUSTED_VERSION` default in the `Dockerfile` and the
+Alpine version is its `FROM` line. Renovate keeps both current, so the docs do
+not repeat them.
 
 ### 3. Testing Your Changes
 
@@ -164,10 +173,10 @@ Manual version updates are rarely needed, but if required:
 
 ```dockerfile
 # Busted version
-ARG BUSTED_VERSION=2.3.0
+ARG BUSTED_VERSION=<busted-version>
 
 # Alpine base image
-FROM alpine:3.24.3
+FROM alpine:<alpine-version>
 ```
 
 When manually updating the Alpine version, update all spots together — the
@@ -182,8 +191,7 @@ When manually updating versions:
 3. Update `ARG BUSTED_VERSION=X.Y.Z` in the Dockerfile to the `lua5.3-busted`
    version the Alpine release ships (`apk search -x lua5.3-busted`)
 4. Test the build thoroughly
-5. Update version numbers in documentation
-6. Run the full test suite
+5. Run the full test suite
 
 ### Adding New Features
 
