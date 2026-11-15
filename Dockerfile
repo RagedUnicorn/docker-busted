@@ -1,7 +1,7 @@
 ############################################
 # Busted runtime image
 ############################################
-FROM alpine:3.24.3
+FROM alpine:3.24.4
 
 # Version of the Alpine lua5.3-busted package. Installed with apk's fuzzy
 # '~' match, so any Alpine package revision (-rN) of this upstream release is
@@ -21,7 +21,7 @@ LABEL org.opencontainers.image.title="Busted on Alpine Linux" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
-      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.3"
+      org.opencontainers.image.base.name="docker.io/library/alpine:3.24.4"
 
 # Busted and its dependencies (luassert, penlight, luasystem, ...) from the
 # Alpine main repository. The packages are signed by Alpine and their versions
